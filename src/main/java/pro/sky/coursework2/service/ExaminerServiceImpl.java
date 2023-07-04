@@ -7,6 +7,7 @@ import pro.sky.coursework2.interfaces.QuestionService;
 import pro.sky.coursework2.model.Question;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -19,7 +20,7 @@ public class ExaminerServiceImpl implements ExaminerService {
     }
 
     @Override
-    public Collection<Question> getQuestions(int amount) {//Тест к тому чтоб при максимальном значении вопросов
+    public List<String> getQuestions(int amount) {//Тест к тому чтоб при максимальном значении вопросов
         // учитывалось что есть -1
         if (amount <= 0 || amount > service.getAll().size() -1) {
             throw new BAD_REQUEST();
@@ -28,7 +29,7 @@ public class ExaminerServiceImpl implements ExaminerService {
         while (tmp.size() < amount) {
             tmp.add(service.getRandomQuestion());
         }
-        return tmp;
+        return tmp.stream().map(Question::getQuestion).collect(Collectors.toList());
 
     }
 }
